@@ -1,1 +1,1 @@
-# aws-sls-tf-starter
+# my-svc-starter

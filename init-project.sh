@@ -24,8 +24,9 @@ readonly awsCliProfile="$3"
 aws_region="$4"
 
 old_service="my-svc"
-old_backend="my-svc-C01FB8480341"
+old_backend="my-svc-5B7E37BE020C"
 old_region="us-east-1"
+old_profile="ct-ssvc"
 
 if [[ "$4" ]]
 then
@@ -74,34 +75,15 @@ sed -i '' -e  "s/$old_region/$aws_region/g" init-project.sh
 sed -i '' -e  "s/$old_service/$serviceName/g" init-project.sh
 
 
+echo "Replacing the instances of $old_service with the $serviceName"
 
-
-
-
-
-
-# Rename the new microservice
-# The following sed commands were tested on Mac OSX, which is known to be incompatible with other systems.
-# If this script fails on the sed commands, try modifying the below commands by removing the '' parameter of the -i option.
-
-# Replace the artifacts bucket name
-# grep -r -l --exclude-dir $targetDirectory/node_modules aws-sls-tf-artifacts $targetDirectory/* | \
-#   xargs sed -i '' -e "s/aws-sls-tf-artifacts/$artifactsBucketName/g"
-
-# # Replace the Repository URI
-# grep -r -l --exclude-dir ./node_modules "https://bitbucket.org/slalom-consulting/sam-service-accelerator.git" ./* | \
-#   xargs sed -i '' -e "s#https://bitbucket.org/slalom-consulting/sam-service-accelerator.git#$repositoryUri#g"
-
-# # Replace instances of "sam-service-accelerator" with the new serviceName
-
-# sed -i '' -e  "s/aws-sls-tf/$serviceName/g" ./package-lock.json
-# sed -i '' -e  "s/aws-sls-tf/$serviceName/g" ./package.json
-# sed -i '' -e  "s/aws-sls-tf/$serviceName/g" ./README.md
-# sed -i '' -e  "s/aws-sls-tf/$serviceName/g" ./api-tests/config/env.config.json
+sed -i '' -e  "s/$old_service/$serviceName/g" ./package-lock.json
+sed -i '' -e  "s/$old_service/$serviceName/g" ./package.json
+sed -i '' -e  "s/$old_service/$serviceName/g" ./README.md
 
 
 # # Set the AWS CLI Profile name
-# sed -i '' -e  "s/aws-sls-tf/$awsCliProfile/g" ./package.json
+ sed -i '' -e  "s/$old_profile/$awsCliProfile/g" ./package.json
 
 
 echo "Finished setting up the new microservice $serviceName" 

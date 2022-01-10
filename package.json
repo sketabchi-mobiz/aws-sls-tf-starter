@@ -1,10 +1,10 @@
 {
-  "name": "aws-sls-tf",
+  "name": "my-svc",
   "version": "0.1.0",
   "description": "Terraform Accelerator for AWS APIs",
   "repository": {
     "type": "git",
-    "url": "https://seyedk/aws-sls-tf/aws-sls-tf.git"
+    "url": "https://seyedk/my-svc/my-svc.git"
   },
   "author": {
     "name": "seyedk",
@@ -15,8 +15,8 @@
     "Seyed K. <seyedk@slalom.com>"
   ],
   "config": {
-    "artifacts_bucket": "aws-sls-tf-artifacts",
-    "awscli_profile": "aws-sls-tf",
+    "artifacts_bucket": "my-svc-artifacts",
+    "awscli_profile": "my-svc",
     "code_extension": "ts"
   },
   "scripts": {
@@ -33,7 +33,7 @@
     "clean:unit-tests": "rm -rf .nyc_output coverage",
     "debug": "npm run build:dev && npm run service -- --debug-port 5858",
     "docker": "docker ps > /dev/null 2>&1 || dockerd-rootless.sh --experimental --iptables=false --storage-driver vfs &",
-    "dynamo:network": "docker network create aws-sls-tf-network",
+    "dynamo:network": "docker network create my-svc-network",
     "dynamo:start": "docker-compose up -d && local_setup/init-dynamodb-local.sh ${npm_package_name} ${npm_package_config_awscli_profile}",
     "dynamo:stop": "docker-compose down",
     "init": "npm run whoami && npm run stack-name && mkdir -p build/output",
@@ -50,7 +50,7 @@
     "sam:validate": "sam validate --profile ${npm_package_config_awscli_profile} --template microservice.sam.yml",
     "sam:package": "aws cloudformation package --profile ${npm_package_config_awscli_profile} --s3-bucket ${npm_package_config_artifacts_bucket} --template-file microservice.sam.yml --s3-prefix developer-build-artifacts/${npm_package_name}/${npm_config_whoami}/developer-0.0.1/lambda --output-template-file build/output/package.yml",
     "sam:deploy": "aws cloudformation deploy --profile ${npm_package_config_awscli_profile} --template-file build/output/package.yml --stack-name ${npm_config_stack_name} --capabilities CAPABILITY_IAM --parameter-overrides paramReleaseVersion=developer-0.0.1 paramFeatureBranch=${npm_config_whoami}",
-    "service": "sam local start-api --profile ${npm_package_config_awscli_profile} --template microservice.sam.yml --docker-network aws-sls-tf-network --parameter-overrides \"ParameterKey=paramFeatureBranch,ParameterValue=local\" --skip-pull-image",
+    "service": "sam local start-api --profile ${npm_package_config_awscli_profile} --template microservice.sam.yml --docker-network my-svc-network --parameter-overrides \"ParameterKey=paramFeatureBranch,ParameterValue=local\" --skip-pull-image",
     "stack-name": "npm config set stack_name developer-${npm_config_whoami}-${npm_package_name}",
     "test": "npm run clean:unit-tests && npm run lint && npm run nyc",
     "test:js": "npm run clean:unit-tests && npm run lint:js && npm run nyc:js",
